@@ -1,6 +1,6 @@
 import { LoremIpsum } from 'lorem-ipsum';
 
-import { Book } from '../types';
+import { Book } from '../app/types';
 import { getRandomNumberInRange } from './utils';
 
 const books: Book[] = [];

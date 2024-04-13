@@ -1,13 +1,19 @@
 
 import './globals.css';
+import '@radix-ui/themes/styles.css';
 
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter as FontSans } from 'next/font/google';
 import React from 'react';
+
+import { cn } from '@/lib/utils';
 
 import ReduxProvider from './redux/ReduxProvider';
 
-const inter = Inter({ subsets: ['latin'] });
+const fontSans = FontSans({
+  subsets: ['latin'],
+  variable: '--font-sans',
+});
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -21,7 +27,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body
+        className={cn(
+          'min-h-screen bg-background font-sans antialiased',
+          fontSans.variable
+        )}
+      >
         <ReduxProvider>
           {children}
         </ReduxProvider>

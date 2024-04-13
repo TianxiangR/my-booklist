@@ -21,7 +21,7 @@ module.exports = {
         }
       }
     ],
-    ignorePatterns: ['/*.js', '/*.ts', 'build/**', 'dist/**', 'node_modules/**'],
+    ignorePatterns: ['/*.js', '/*.ts', 'build/**', 'dist/**', 'node_modules/**', 'components/ui/**'],
     'parser': '@typescript-eslint/parser',
     'parserOptions': {
       'ecmaVersion': 'latest',
