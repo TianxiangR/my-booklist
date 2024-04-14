@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { v4 as uuidv4 } from 'uuid';
 
 import { Book } from '@/app/types';
 import books from '@/lib/data';
@@ -12,7 +13,7 @@ export const bookSlice = createSlice({
   initialState,
   reducers: {
     addBook: (state: Book[], action: PayloadAction<Omit<Book, 'id'>>) => {
-      return [...state, {...action.payload, id: (state[state.length - 1]?.id ?? 0) + 1}];
+      return [...state, {...action.payload, id: uuidv4()}];
     },
     removeBook: (state: Book[], action: PayloadAction<Book>) => {
       return state.filter(book => book.id !== action.payload.id);

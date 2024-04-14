@@ -1,7 +1,7 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FiEdit } from 'react-icons/fi';
 import { MdDeleteForever } from 'react-icons/md';
 
@@ -112,15 +112,13 @@ function useBookTableColumns() {
         );
       },
       cell: ({ row }) => {
-        const amount = parseFloat(row.getValue('price'));
-
         // Format the amount as a dollar amount
-        const formatted = new Intl.NumberFormat('en-CA', {
+        const formattedPrice = new Intl.NumberFormat('en-CA', {
           style: 'currency',
           currency: 'CAD',
-        }).format(amount);
+        }).format(row.getValue('price'));
 
-        return <div className="text-right font-medium mr-5">{formatted}</div>;
+        return <div className="text-right font-medium mr-5">{formattedPrice}</div>;
       },
     },
     {

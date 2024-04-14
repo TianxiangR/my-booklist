@@ -22,8 +22,7 @@ function BookDetailPage() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const books = useAppSelector(selectBooks);
-  const bookId = Number(useParams().bookId);
-  console.log(bookId);
+  const bookId = useParams().bookId;
   const currentBook = books.find((book) => book.id === bookId);
 
   if (!currentBook) {
@@ -36,11 +35,11 @@ function BookDetailPage() {
   };
 
   const handleEditClick = () => {
-    router.push(`/books/${bookId}/edit`);
+    router.push(`/${bookId}/edit`);
   };
   
   return (
-    <div className="px-10 py-5 flex flex-col gap-5 w-full">
+    <main className="px-10 py-5 flex flex-col gap-5 w-full">
       <Card className="p-5">
         <div className="w-full flex flex-row items-center justify-between">
           <h1 className="text-2xl font-semibold">{currentBook.title}</h1>
@@ -80,7 +79,7 @@ function BookDetailPage() {
         <h1 className="text-2xl font-semibold">Description</h1>
         <p className="text-gray-600">{currentBook.description}</p>
       </Card>
-    </div>
+    </main>
   );
 }
 

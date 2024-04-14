@@ -1,4 +1,5 @@
 import { LoremIpsum } from 'lorem-ipsum';
+import { v4 as uuidv4 } from 'uuid';
 
 import { Book } from '../app/types';
 import { getRandomNumberInRange } from './utils';
@@ -21,7 +22,7 @@ function createRandomBook(): Book {
   const price = getRandomNumberInRange(minPrice, maxPrice) - 0.01;
   const description = lorem.generateSentences(getRandomNumberInRange(minDescriptionLength, maxDescriptionLength));
   const category = categories[getRandomNumberInRange(0, categories.length - 1)];
-  const id = books.length + 1;
+  const id = uuidv4();
 
   return { id, title, author, price, description, category };
 }
