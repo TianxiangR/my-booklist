@@ -142,6 +142,7 @@ function CreateBookForm({ defaultValues = {}, mode = 'create', onSubmit, onCance
           control={form.control}
           name="price"
           render={({field}) => {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const {onChange, value: _, ...rest} = field;
             const [value, setValue] = React.useState<string>(String(field.value));
 

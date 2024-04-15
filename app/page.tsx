@@ -25,6 +25,7 @@ import { removeBook, selectBooks } from '@/app/redux/slices/bookSlice';
 import { useAppDispatch, useAppSelector } from '@/app/redux/store';
 import { Book } from '@/app/types';
 import useBookTableColumns from '@/components/home/useBookTableColumns';
+import withSuspense from '@/components/shared/withSuspense';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -48,7 +49,7 @@ import useDebouncedState from '@/hooks/useDebouncedState';
 import useSearchParamsState from '@/hooks/useSearchParamsState';
 
 
-export default function Home() {
+function Home() {
   const [searchParams, setSearchParams] = useSearchParamsState();
   const availablePageSizes = [10, 25, 50, 100];
   const size = Number(searchParams.get('pageSize')) > 0 ? Number(searchParams.get('pageSize')) : availablePageSizes[0];
@@ -288,3 +289,6 @@ export default function Home() {
     </main>
   );
 }
+
+
+export default withSuspense(Home);
