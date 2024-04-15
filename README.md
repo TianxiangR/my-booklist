@@ -23,7 +23,7 @@ This project is a React-based web application for managing a bookstore. It featu
 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/react-bookstore.git
+git clone https://github.com/TianxiangR/my-booklist.git
 cd react-bookstore
 ```
 
