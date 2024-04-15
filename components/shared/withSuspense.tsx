@@ -1,4 +1,4 @@
-import React, { ComponentProps, ComponentType, PropsWithChildren, ReactNode, Suspense } from 'react';
+import React, {  ComponentType, ReactNode, Suspense } from 'react';
 
 /**
  * A higher-order component that wraps a given component with React Suspense.
