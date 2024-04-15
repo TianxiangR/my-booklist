@@ -24,7 +24,7 @@ This project is a React-based web application for managing a bookstore. It featu
 
 ```bash
 git clone https://github.com/TianxiangR/my-booklist.git
-cd react-bookstore
+cd my-booklist
 ```
 
 2. Install dependencies
