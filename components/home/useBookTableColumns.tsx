@@ -1,7 +1,8 @@
-import { ColumnDef } from '@tanstack/react-table';
+import { Column, ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import React, { useEffect } from 'react';
+import React from 'react';
+import { FaArrowDownWideShort , FaArrowUpShortWide } from 'react-icons/fa6';
 import { FiEdit } from 'react-icons/fi';
 import { MdDeleteForever } from 'react-icons/md';
 
@@ -10,17 +11,72 @@ import { useAppDispatch } from '@/app/redux/store';
 import { Book } from '@/app/types';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+import { clipOfText,  stopPropagation } from '@/lib/utils';
+
+import { useToast } from '../ui/use-toast';
 
 function useBookTableColumns() {
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch(); 
+  const {toast} = useToast();
   const router = useRouter();
-  const handleDeleteClick = (book: Book) => (e: React.MouseEvent) => {
-    e.stopPropagation();
+  const handleDeleteClick = (book: Book) => (e: React.MouseEvent) => stopPropagation(e, () => {
     dispatch(removeBook(book));
-  };
-  const handleEditClick = (book: Book) => (e: React.MouseEvent) => {
-    e.stopPropagation();
+    toast({
+      description: <p><span className="font-semibold italic">&quot;{book.title}&ldquo;</span> has been removed.</p>,
+    });
+  });
+  const handleEditClick = (book: Book) => (e: React.MouseEvent) => stopPropagation(e, () => {
     router.push(`/${book.id}/edit`);
+  });
+ 
+
+  const sortIcons: Record<string, JSX.Element> = {
+    'asc': <FaArrowUpShortWide className="ml-2 h-4 w-4" />,
+    'desc': <FaArrowDownWideShort className="ml-2 h-4 w-4" />,
+    'false': <ArrowUpDown className="ml-2 h-4 w-4" />, 
+  };
+
+  const renderSortingHeader = (column: Column<Book>) => {
+    return (
+      <Button
+        variant="link"
+        onClick={column.getToggleSortingHandler()}
+        className="capitalize"
+      >
+        {column.id}
+        {
+          sortIcons[String(column.getIsSorted())]
+        }
+      </Button>
+    );
+  };
+
+  const renderClippedText = (text: string, maxLength: number) => {
+    const clippedText = clipOfText(text, maxLength);
+
+    if (clippedText !== text) {
+      return (
+        <TooltipProvider>
+          <Tooltip delayDuration={300}>
+            <TooltipTrigger>
+              <div className="ml-4 text-left">
+                {clippedText}
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              {text}
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      );
+    }
+    return <div className="ml-4 text-left">{clippedText}</div>;
   };
 
   const columns: ColumnDef<Book>[] = [
@@ -33,12 +89,14 @@ function useBookTableColumns() {
           (table.getIsSomePageRowsSelected() && 'indeterminate')
           }
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          onClick={stopPropagation}
         />
       ),
       cell: ({ row }) => (
         <Checkbox
           checked={row.getIsSelected()}
           onCheckedChange={(value) => row.toggleSelected(!!value)}
+          onClick={stopPropagation}
         />
       ),
       enableSorting: false,
@@ -46,70 +104,23 @@ function useBookTableColumns() {
     },
     {
       accessorKey: 'title',
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="link"
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          >
-            Title
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        );
-      },
-      cell: ({ row }) => (
-        <div className="ml-4">
-          {row.getValue('title')}
-        </div>
-      ),
+      header: ({column}) => renderSortingHeader(column),
+      cell: ({ row, column }) => renderClippedText(row.getValue(column.id), 80),
     },
     {
       accessorKey: 'author',
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="link"
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          >
-          Author
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        );
-      },
-      cell: ({ row }) => <div className="truncate ml-4">
-        {row.getValue('author')}
-      </div>,
+      header: ({column}) => renderSortingHeader(column),
+      cell: ({ row, column }) => renderClippedText(row.getValue(column.id), 30),
     },
     {
       accessorKey: 'category',
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="link"
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          >
-          Category
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        );
-      },
-      cell: ({ row }) => <div className="ml-4">{row.getValue('category')}</div>,
+      header: ({column}) => renderSortingHeader(column),
+      cell: ({ row, column }) => renderClippedText(row.getValue(column.id), 20),
     },
     {
       accessorKey: 'price',
       header: ({ column }) => {
-        return (
-          <div className="w-full flex justify-end">
-            <Button
-              variant="link"
-              className="mr-0"
-              onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-            >
-            Price
-              <ArrowUpDown className="ml-2 h-4 w-4" />
-            </Button>
-          </div>
-        );
+        return renderSortingHeader(column);
       },
       cell: ({ row }) => {
         // Format the amount as a dollar amount

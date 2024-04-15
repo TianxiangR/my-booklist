@@ -7,6 +7,7 @@ import { MdDeleteForever } from 'react-icons/md';
 
 import { removeBook, selectBooks } from '@/app/redux/slices/bookSlice';
 import { useAppDispatch, useAppSelector } from '@/app/redux/store';
+import BookNotFound from '@/components/book/BookNotFound';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import {
@@ -17,6 +18,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { createNavigateBack } from '@/lib/utils';
 
 function BookDetailPage() {
   const router = useRouter();
@@ -26,12 +28,14 @@ function BookDetailPage() {
   const currentBook = books.find((book) => book.id === bookId);
 
   if (!currentBook) {
-    return <div>Book not found</div>;
+    return <BookNotFound />;
   }
+
+  const navigateBack = createNavigateBack(router);
 
   const handleDeleteClick = () => {
     dispatch(removeBook(currentBook));
-    router.push('/');
+    navigateBack();
   };
 
   const handleEditClick = () => {
@@ -39,7 +43,7 @@ function BookDetailPage() {
   };
   
   return (
-    <main className="px-10 py-5 flex flex-col gap-5 w-full">
+    <main className="px-10 py-5 flex flex-col gap-5 w-full centered-container-lg">
       <Card className="p-5">
         <div className="w-full flex flex-row items-center justify-between">
           <h1 className="text-2xl font-semibold">{currentBook.title}</h1>

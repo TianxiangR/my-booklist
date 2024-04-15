@@ -83,4 +83,31 @@
     .page {
       @apply p-2 lg:px-24 lg:py-8 2xl:px-48;
     }
+
+    .centered-container-lg {
+      @apply p-10 max-w-[1000px] ml-auto mr-auto w-full
+    }
+
+    .book-table {
+      display: grid;
+      grid-template-columns: 1fr 16fr 8fr 6fr 6fr 2fr;
+      align-items: center;
+      @apply divide-y-[1px]
+    }
+
+    .book-table thead, .book-table tbody, .book-table tr {
+      display: contents;
+    }
+
+    .book-table td {
+
+    }
+
+    .book-table th, .book-table td {
+      padding: 1rem;
+      /* overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap; */
+    }
+
   }

@@ -1,7 +1,8 @@
 'use client';
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import {v4 as uuidv4} from 'uuid';
 import { z } from 'zod';
 
 import { Book } from '@/app/types';
@@ -35,15 +36,17 @@ type BookFormProps = (CreateBookFormProps | EditBookFormProps) & {
 };
 
 const formSchema = z.object({
-  title: z.string().min(1).max(100),
-  author: z.string().min(1).max(100),
-  price: z.number().min(0).max(99999),
-  category: z.string().min(1).max(100),
-  description: z.string().min(1).max(5000),
+  title: z.string().min(1, 'Title is required').max(100, 'Title cannot exceed 100 characters'),
+  author: z.string().min(1, 'Author is required').max(100, 'Author cannot exceed 100 characters'),
+  price: z.number().min(0.0, 'Price must be greater than or equal to 0').max(9999.99, 'Price cannot exceed 9999.99'),
+  category: z.string().min(1, 'Category is required').max(100, 'Category cannot exceed 100 characters'),
+  description: z.string().min(1, 'Description is required').max(5000, 'Description cannot exceed 5000 characters'),
+  id: z.string().optional(),
 });
 
 function CreateBookForm({ defaultValues = {}, mode = 'create', onSubmit, onCancel }: BookFormProps) {
   const unifiedDefaultValues = {
+    id: uuidv4(),
     title: '',
     author: '',
     price: 0,
@@ -68,7 +71,7 @@ function CreateBookForm({ defaultValues = {}, mode = 'create', onSubmit, onCance
   return (
     <Form {...form}>
       <h1 className='text-2xl font-semibold mb-8'>{formTitle}</h1>
-      <form onSubmit={form.handleSubmit((value) => onSubmit?.(value))} className="flex flex-col gap-5">
+      <form onSubmit={form.handleSubmit((val) => onSubmit?.(val))} className="flex flex-col gap-5">
         <FormField
           control={form.control}
           name="title"
@@ -103,6 +106,22 @@ function CreateBookForm({ defaultValues = {}, mode = 'create', onSubmit, onCance
         />
         <FormField
           control={form.control}
+          name="category"
+          render={({field}) => {
+            return (
+              <FormItem>
+                <FormLabel htmlFor={field.name}>Category<span className="text-red-600">*</span></FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormDescription>Enter the category of the book</FormDescription>
+                <FormMessage/>
+              </FormItem>
+            );
+          }}
+        />
+        <FormField
+          control={form.control}
           name="description"
           render={({field}) => {
             return (
@@ -123,11 +142,26 @@ function CreateBookForm({ defaultValues = {}, mode = 'create', onSubmit, onCance
           control={form.control}
           name="price"
           render={({field}) => {
+            const {onChange, value: _, ...rest} = field;
+            const [value, setValue] = React.useState<string>(String(field.value));
+
+            useEffect(() => {
+              setValue(String(field.value));
+            }, [field.value]);
+
+            useEffect(() => {
+              onChange(Number(value));
+            }, [value]);
+
+            const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+              setValue(e.target.value);
+            };
+
             return (
               <FormItem>
                 <FormLabel htmlFor={field.name}>Price<span className="text-red-600">*</span></FormLabel>
                 <FormControl>
-                  <Input {...field} type="number"/>
+                  <Input onChange={handleChange} value={value} {...rest} type="number"/>
                 </FormControl>
                 <FormDescription>Enter the price of the book</FormDescription>
                 <FormMessage/>
