@@ -9,8 +9,6 @@ import { useToast } from '@/components/ui/use-toast';
 import { createBook } from '@/lib/actions';
 import { createNavigateBack } from '@/lib/utils';
 
-import { addBook } from '../redux/slices/bookSlice';
-import { useAppDispatch } from '../redux/store';
 import { Book } from '../types';
 
 function CreateBookPage() {

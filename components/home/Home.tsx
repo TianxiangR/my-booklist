@@ -44,9 +44,10 @@ import {
 import { useToast } from '@/components/ui/use-toast';
 import useDebouncedState from '@/hooks/useDebouncedState';
 import useSearchParamsState from '@/hooks/useSearchParamsState';
-import { batchDeleteBooks, deleteBookById } from '@/lib/actions';
+import { batchDeleteBooks } from '@/lib/actions';
 
 import RevalidateButton from '../revalidate-button/RevalidateButton';
+import withSuspense from '../shared/withSuspense';
 
 
 export interface HomeProps {
@@ -292,4 +293,4 @@ function Home({books}: HomeProps) {
 }
 
 
-export default Home;
+export default withSuspense(Home);
