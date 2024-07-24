@@ -149,7 +149,7 @@ function Home({books}: HomeProps) {
   }, [pagination]);
 
   return (
-    <main className="page h-screen flex flex-col flex-1">
+    <main className="page h-screen flex flex-col">
       {/* Top: search bar, create button */}
       <div className="flex justify-between">
         <div className="flex items-center mb-2 gap-5">
@@ -177,7 +177,7 @@ function Home({books}: HomeProps) {
       </div>
 
       {/* Table */}
-      <div className="rounded-md border overflow-auto flex-1 h-full">
+      <div className="rounded-md border overflow-auto">
         <Table className="">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
