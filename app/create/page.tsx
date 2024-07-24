@@ -6,6 +6,7 @@ import React from 'react';
 import CreateBookForm from '@/components/book/CreateBookForm';
 import { Card } from '@/components/ui/card';
 import { useToast } from '@/components/ui/use-toast';
+import { createBook } from '@/lib/actions';
 import { createNavigateBack } from '@/lib/utils';
 
 import { addBook } from '../redux/slices/bookSlice';
@@ -15,10 +16,10 @@ import { Book } from '../types';
 function CreateBookPage() {
   const {toast} = useToast();
   const router = useRouter();
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
   const navigateBack = createNavigateBack(router);
-  const handleCreateBook = (book: Book) => {
-    dispatch(addBook(book));
+  const handleCreateBook = async (book: Book) => {
+    await createBook(book);
     toast({
       description: (
         <p>

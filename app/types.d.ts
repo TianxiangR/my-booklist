@@ -6,3 +6,7 @@ export type Book = {
   description: string;
   category: string;
 }
+
+export type BookApi = Omit<Book, 'price'> & {
+  price: string;
+}

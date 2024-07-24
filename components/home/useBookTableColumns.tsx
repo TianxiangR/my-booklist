@@ -6,8 +6,6 @@ import { FaArrowDownWideShort , FaArrowUpShortWide } from 'react-icons/fa6';
 import { FiEdit } from 'react-icons/fi';
 import { MdDeleteForever } from 'react-icons/md';
 
-import { removeBook } from '@/app/redux/slices/bookSlice';
-import { useAppDispatch } from '@/app/redux/store';
 import { Book } from '@/app/types';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -17,16 +15,17 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { deleteBookById } from '@/lib/actions';
 import { clipOfText,  stopPropagation } from '@/lib/utils';
 
 import { useToast } from '../ui/use-toast';
 
 function useBookTableColumns() {
-  const dispatch = useAppDispatch(); 
+  // const dispatch = useAppDispatch(); 
   const {toast} = useToast();
   const router = useRouter();
-  const handleDeleteClick = (book: Book) => (e: React.MouseEvent) => stopPropagation(e, () => {
-    dispatch(removeBook(book));
+  const handleDeleteClick = (book: Book) => (e: React.MouseEvent) => stopPropagation(e, async () => {
+    await deleteBookById(book.id);
     toast({
       description: <p><span className="font-semibold italic">&quot;{book.title}&ldquo;</span> has been removed.</p>,
     });
@@ -146,7 +145,7 @@ function useBookTableColumns() {
           </Button>
           <Button 
             variant="ghost" 
-            size="icon" 
+            size="icon"
             className="rounded-full group text-destructive hover:bg-red-100"
             onClick={handleDeleteClick(row.original)}
           >

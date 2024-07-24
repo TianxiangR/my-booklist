@@ -3,6 +3,7 @@ import { useRouter } from 'next/navigation';
 import React from 'react';
 import { MdError } from 'react-icons/md';
 
+import { revalidateBooks } from '@/lib/actions';
 import { createNavigateBack } from '@/lib/utils';
 
 import { Button } from '../ui/button';
@@ -11,6 +12,10 @@ import { Card } from '../ui/card';
 function BookNotFound() {
   const router = useRouter();
   const navigateBack = createNavigateBack(router);
+  const handleGoBack = async () => {
+    await revalidateBooks();
+    navigateBack();
+  };
 
   return (
     <main className="w-full h-screen flex">
@@ -21,7 +26,7 @@ function BookNotFound() {
         </div>
 
         <Button className='w-fit' variant='link'>
-          <span onClick={navigateBack}>Go back</span>
+          <span onClick={handleGoBack}>Go back</span>
         </Button>
       </Card>
     </main>

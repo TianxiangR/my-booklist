@@ -9,7 +9,6 @@ import React from 'react';
 import { Toaster } from '@/components/ui/toaster';
 import { cn } from '@/lib/utils';
 
-import ReduxProvider from './redux/ReduxProvider';
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -34,9 +33,7 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        <ReduxProvider>
-          {children}
-        </ReduxProvider>
+        {children}
         <Toaster />
       </body>
     </html>
