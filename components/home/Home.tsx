@@ -46,7 +46,6 @@ import useDebouncedState from '@/hooks/useDebouncedState';
 import useSearchParamsState from '@/hooks/useSearchParamsState';
 import { batchDeleteBooks } from '@/lib/actions';
 
-import RevalidateButton from '../revalidate-button/RevalidateButton';
 import withSuspense from '../shared/withSuspense';
 
 
@@ -151,7 +150,6 @@ function Home({books}: HomeProps) {
 
   return (
     <main className="page h-screen flex flex-col flex-1">
-      <RevalidateButton />
       {/* Top: search bar, create button */}
       <div className="flex justify-between">
         <div className="flex items-center mb-2 gap-5">
