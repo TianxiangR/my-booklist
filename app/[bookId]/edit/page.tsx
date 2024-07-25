@@ -1,6 +1,6 @@
+import { notFound } from 'next/navigation';
 import React from 'react';
 
-import BookNotFound from '@/components/book/BookNotFound';
 import EditBook from '@/components/book-edit/EditBook';
 import { getBookById } from '@/lib/actions';
 
@@ -10,9 +10,8 @@ async function EditBookPage({ params }: { params: { bookId: string } }) {
   const book = await getBookById(bookId);
 
   if (!book) {
-    return <BookNotFound />;
+    notFound();
   }
-
   return (
     <EditBook book={book} />
   );
