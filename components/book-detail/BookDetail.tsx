@@ -16,9 +16,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import useNavigateBack from '@/hooks/useNavigateBack';
 import { deleteBookById, revalidateBooks } from '@/lib/actions';
-import { createNavigateBack } from '@/lib/utils';
-
 
 export interface BookDetailPageProps {
   book: Book;
@@ -27,7 +26,7 @@ export interface BookDetailPageProps {
 function BookDetail({ book }:BookDetailPageProps ) {
   const router = useRouter();
   const bookId = book.id;
-  const navigateBack = createNavigateBack(router);
+  const navigateBack = useNavigateBack();
 
   const handleDeleteClick = async () => {
     await deleteBookById(bookId);

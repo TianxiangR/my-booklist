@@ -1,6 +1,6 @@
+import { notFound } from 'next/navigation';
 import React from 'react';
 
-import BookNotFound from '@/components/book/BookNotFound';
 import BookDetail from '@/components/book-detail/BookDetail';
 import { getBookById } from '@/lib/actions';
 
@@ -9,7 +9,7 @@ async function BookDetailPage({ params }: { params: { bookId: string } }) {
   const book = await getBookById(bookId);
 
   if (!book) {
-    return <BookNotFound />;
+    notFound();
   }
 
   return (

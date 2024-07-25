@@ -1,14 +1,13 @@
 'use client';
 import Link from 'next/link';
-import {  useRouter } from 'next/navigation';
 import React from 'react';
 
 import { Book } from '@/app/types';
 import CreateBookForm from '@/components/book/CreateBookForm';
 import { Card } from '@/components/ui/card';
 import { useToast } from '@/components/ui/use-toast';
+import useNavigateBack from '@/hooks/useNavigateBack';
 import { updateBook } from '@/lib/actions';
-import { createNavigateBack } from '@/lib/utils';
 
 export interface EditBookPageProps {
   book: Book;
@@ -16,8 +15,7 @@ export interface EditBookPageProps {
 
 function EditBook({book }:EditBookPageProps ) {
   const {toast} = useToast();
-  const router = useRouter();
-  const navigateBack = createNavigateBack(router);
+  const navigateBack = useNavigateBack();
   const handleSaveBook = async (book: Book) => {
     await updateBook(book);
     toast({
